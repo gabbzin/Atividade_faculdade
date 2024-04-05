@@ -26,7 +26,7 @@ int main(){
 
     printf("Fiz a transformacao: \n");
     printf("O tempo de %d segundos convertido no tempo equivalente a horas, minutos e segundos\n", segundos);
-    printf("E igual a: %d horas %d minutos %d segundos.");
+    printf("E igual a: %d horas %d minutos %d segundos.", horas, minutos, segundos);
 
     printf("\n\n==== Codigo executado com sucesso ====\n\n");
 
