@@ -25,7 +25,7 @@ int main(){
 
     while (TRUE){
         // Pedindo ao usuário para escolher uma operação
-        printf("|  Por favor! Escolha uma das opcoes abaixo: \n");
+        printf("|  Escolha uma das opcoes abaixo: \n");
         printf("|  1. Sacar     2. Depositar     3. Sair \n|\n");
         printf("|  Qual operacao deseja realizar: ");
         scanf("%d", &realizarOperacao);
@@ -90,47 +90,69 @@ int main(){
                 printf("|  Saldo da conta poupanca: R$ %.2lf \n", saldoContaPoupanca);
 
                 // Pedindo ao usuário o valor a ser depositado
-                printf("|  Qual valor deseja depositar: R$");
+                printf("|  Qual valor deseja depositar: R$ ");
                 scanf("%lf", &valorDeposito);
 
                 espacamento();
                 sleep(2);
 
-                printf("|  Em qual conta deseja depositar: ");
-                printf("|  1. Corrente        2. Poupanca");
-                printf("Sua escolha: ");
+                printf("|  Em qual conta deseja depositar: \n");
+                printf("|  1. Corrente        2. Poupanca \n");
+                printf("|  Sua escolha: ");
                 scanf("%d", escolhaConta);
 
                 espacamento();
                 sleep(2);
 
                 // Verificação para evitar depósitos negativos (while) e escolha da conta onde o dinheiro vai ser depositado ()
-                while(valorDeposito <= 0 || escolhaConta != (1 || 2)){
-                    // Verificação para evitar depósitos negativos
-                    if (valorDeposito <= 0){
-                        printf("|  O valor digitado e invalido! \n|  Digite um valor maior do que 0 \n");
-                        sleep(2);
+                while(valorDeposito <= 0){
+                    printf("|  O valor digitado e invalido! \n|  Digite um valor maior do que 0 \n");
+                    sleep(2);
 
-                        printf("|  Qual valor deseja depositar: R$ ");
-                        scanf("%lf", &valorDeposito);
-                    }
+                    printf("|  Qual valor deseja depositar: R$ ");
+                    scanf("%lf", &valorDeposito);
 
-                    // Escolha da conta para ser depositado o dinheiro
-                    if (escolhaConta != (1 || 2)){
-                        printf("\n|  A opcao escolhida nao existe, por favor tente novamente!\n|\n");
-
-                        sleep(2);
-
-                        printf("|  Em qual conta deseja depositar: ");
-                        printf("|  1. Corrente        2. Poupanca");
-                        printf("Sua escolha: ");
-                        scanf("%d", escolhaConta);
-                    }
+                    espacamento();
+                    sleep(2);
                 }
 
-                // Fazer os cálculos para realizar o depósito (case 2)
-                // Fazer a opção 3 (Sair), onde dá break e encerra o programa
+                    // Escolha da conta para ser depositado o dinheiro
+                while (escolhaConta != (1 || 2)){
+                   printf("\n|  A opcao escolhida nao existe, por favor tente novamente!\n|\n");
+
+                    sleep(2);
+
+                    printf("|  Em qual conta deseja depositar: ");
+                    printf("|  1. Corrente        2. Poupanca");
+                    printf("Sua escolha: ");
+                    scanf("%d", escolhaConta);
+
+                    espacamento();
+                    sleep(2);
+                }
+
+                if (escolhaConta == 1){
+                    // Depositando na conta corrente
+                    saldoContaCorrente =+ valorDeposito;
+                    printf("|  Novo saldo da conta corrente: R$ %.2lf", saldoContaCorrente);
+                } else {
+                    saldoContaPoupanca =+ valorDeposito;
+                    printf("|  Novo saldo da conta poupanca: R$ %.2lf", saldoContaPoupanca);
+                }
+
+                espacamento();
+                sleep(2);
+
+                break;
+            default: // Encerrar o programa
+                sleep(2);
+                printf("|  Por favor digite um valor valido.\n");
+                break;
         }
+        if (realizarOperacao == 3){
+            break;
+        } 
     }
+
     return 0;
 }
