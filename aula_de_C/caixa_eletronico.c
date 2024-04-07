@@ -1,20 +1,24 @@
 #include <stdio.h>
-#include <time.h>
+#include <windows.h> // Adição do sleep (Medido em milisegundos); 100ms equivalentem a 1s
 
-// Criando uma função para o espaçamento, pois será usada algumas vezes
+// Função para o espaçamento, evitando repetições
 char espacamento() {
-    return printf("|\n------------------------------------------------------\n");
+    return printf("|\n-----------------------------------------------------------------\n");
 }
-
+// Função para colocar um intervalo de tempo entre os códigos
+void sleep(int segundos) {
+    Sleep(segundos * 1000); // Convertendo de Segundos para MiliSegundos
+}
+// Principal
 int main(){
 
-    printf("\n\n------------------ Caixa Eletronico -------------------\n|\n");
+    printf("\n\n----------------------- Caixa Eletronico ------------------------\n|\n");
 
     // Criando as variáveis com double
     double saldoContaCorrente = 1652.20;
     double saldoContaPoupanca = 1254.25;
     double limiteDisponivel = saldoContaCorrente + saldoContaPoupanca;
-    double valorSaque; // Variável para ver qual o valor do saque
+    double valorSaque;
 
     // Pedindo ao usuário para digitar o valor a ser sacado
     printf("|  Saldo da conta corrente: R$ %.2lf \n", saldoContaCorrente);
@@ -24,9 +28,12 @@ int main(){
     scanf("%lf", &valorSaque);
 
     espacamento(); // Chamada para a função de dar espaço
+    sleep(2); // Esperando 2s
 
     while (valorSaque > limiteDisponivel){ // Laço de repetição para o usuário digitar um valor válido
         printf("|  Erro!! Por favor, digite um valor valido!\n");
+
+        sleep(2); // Esperando 2s        
 
         // Pedindo novamente ao usuário digitar o valor a ser sacado até ser validado 
         printf("|  Limite disponivel: R$ %.2lf\n", limiteDisponivel);
@@ -36,6 +43,9 @@ int main(){
         espacamento();
     }
     printf("|\n|  Saque realizado com sucesso!!!\n");
+
+    espacamento();
+    printf("|\n");
 
     // Cálculo do novo limite parcial (de cada conta) após o saque
 
@@ -48,14 +58,16 @@ int main(){
         saldoContaPoupanca -= valorSaque;
     }
     // Cálculo do limite total após o saque
-    valorSaque -= limiteDisponivel;
+    limiteDisponivel -= valorSaque;
+
+    sleep(2); // Esperando 2s
 
     // Mostrando o novo limite disponível e os saldos restantes das contas Corrente e Poupança
     printf("|  Novo limite disponivel: %.2lf \n", limiteDisponivel);
     printf("|  O saldo restante da sua conta corrente ficou: R$ %.2lf \n", saldoContaCorrente);
-    printf("|  O saldo restante da sua conta poupanca ficou: R$ %.2lf", saldoContaPoupanca);
+    printf("|  O saldo restante da sua conta poupanca ficou: R$ %.2lf \n", saldoContaPoupanca);
 
-    printf("\n-------------------------------------------------------\n"); // Não pude chamar a função novamente por causa da barra no inicio
+    espacamento();
 
     // Fim do programa
     return 0;
