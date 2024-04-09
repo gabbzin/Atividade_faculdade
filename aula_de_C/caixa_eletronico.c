@@ -17,11 +17,11 @@ int main(){
     // Criando as variáveis com double
     int realizarOperacao; // Para o usuário escolher a opção a ser realizada
     int escolhaConta; // Escolha da conta a ser utilizada para o depósito
-    double saldoContaCorrente = 1652.20;
-    double saldoContaPoupanca = 1254.25;
-    double limiteDisponivel = saldoContaCorrente + saldoContaPoupanca;
-    double valorSaque;
-    double valorDeposito;
+    double saldoContaCorrente = 1652.20; // Saldo da conta corrente
+    double saldoContaPoupanca = 1254.25; // Saldo da conta poupança
+    double limiteDisponivel = saldoContaCorrente + saldoContaPoupanca; // Limite disponível 
+    double valorSaque; // Valor do saque
+    double valorDeposito; // Valor do depósito
 
     while (TRUE){
         // Pedindo ao usuário para escolher uma operação
@@ -45,14 +45,14 @@ int main(){
                 espacamento(); // Função para dar espaço
                 sleep(2); // Esperando 2s
 
-                while (valorSaque > limiteDisponivel && valorSaque <= 0){ // Laço de repetição para o usuário digitar um valor válido
+                while (valorSaque > limiteDisponivel || valorSaque <= 0){ // Laço de repetição para o usuário digitar um valor válido
                     printf("|  Erro!! Por favor, digite um valor valido!\n");
 
                     sleep(2); // Esperando 2s
 
                     // Pedindo novamente ao usuário digitar o valor a ser sacado até ser validado 
                     printf("|  Limite disponivel: R$ %.2lf\n", limiteDisponivel);
-                    printf("|  Digite o valor do saque: ");
+                    printf("|  Digite o valor do saque: R$ ");
                     scanf("%lf", &valorSaque);
 
                     espacamento();
@@ -96,14 +96,6 @@ int main(){
                 espacamento();
                 sleep(2);
 
-                printf("|  Em qual conta deseja depositar: \n");
-                printf("|  1. Corrente        2. Poupanca \n");
-                printf("|  Sua escolha: ");
-                scanf("%d", escolhaConta);
-
-                espacamento();
-                sleep(2);
-
                 // Verificação para evitar depósitos negativos (while) e escolha da conta onde o dinheiro vai ser depositado ()
                 while(valorDeposito <= 0){
                     printf("|  O valor digitado e invalido! \n|  Digite um valor maior do que 0 \n");
@@ -116,16 +108,25 @@ int main(){
                     sleep(2);
                 }
 
-                    // Escolha da conta para ser depositado o dinheiro
-                while (escolhaConta != (1 || 2)){
-                   printf("\n|  A opcao escolhida nao existe, por favor tente novamente!\n|\n");
+                printf("|  Em qual conta deseja depositar: \n");
+                printf("|  1. Corrente        2. Poupanca \n");
+                printf("|  Sua escolha: ");
+                scanf("%d", &escolhaConta);
+
+                espacamento();
+                sleep(2);
+
+                // Escolha da conta para ser depositado o dinheiro
+                while ((escolhaConta != 1) && (escolhaConta != 2)){
+
+                    printf("|  A opcao escolhida nao existe, por favor tente novamente!\n|\n");
 
                     sleep(2);
 
-                    printf("|  Em qual conta deseja depositar: ");
-                    printf("|  1. Corrente        2. Poupanca");
-                    printf("Sua escolha: ");
-                    scanf("%d", escolhaConta);
+                    printf("|  Em qual conta deseja depositar: \n");
+                    printf("|  1. Corrente        2. Poupanca \n");
+                    printf("|  Sua escolha: ");
+                    scanf("%d", &escolhaConta);
 
                     espacamento();
                     sleep(2);
@@ -133,26 +134,36 @@ int main(){
 
                 if (escolhaConta == 1){
                     // Depositando na conta corrente
-                    saldoContaCorrente =+ valorDeposito;
-                    printf("|  Novo saldo da conta corrente: R$ %.2lf", saldoContaCorrente);
-                } else {
-                    saldoContaPoupanca =+ valorDeposito;
-                    printf("|  Novo saldo da conta poupanca: R$ %.2lf", saldoContaPoupanca);
+                    saldoContaCorrente += valorDeposito;
+                    printf("|  Novo saldo da conta corrente: R$ %.2lf \n", saldoContaCorrente);
+                } else if (escolhaConta == 2){
+                    // Depositando na conta poupança
+                    saldoContaPoupanca += valorDeposito;
+                    printf("|  Novo saldo da conta poupanca: R$ %.2lf \n", saldoContaPoupanca);
                 }
 
                 espacamento();
                 sleep(2);
 
                 break;
-            default: // Encerrar o programa
-                sleep(2);
-                printf("|  Por favor digite um valor valido.\n");
-                break;
+            default: // Caso o usuario digite um valor invalido
+                if (realizarOperacao != 3){
+                    printf("|  Por favor digite um valor valido.\n");
+
+                    espacamento();
+                    sleep(2);
+
+                    break;
+                }
         }
         if (realizarOperacao == 3){
             break;
         } 
     }
+    printf("|  Obrigado por utilizar o nosso sistema. \n");
+
+    espacamento();
+    sleep(2);
 
     return 0;
 }
