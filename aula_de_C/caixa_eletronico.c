@@ -57,11 +57,8 @@ int main(){
 
                     espacamento();
 
-                    printf("|\n|  Saque realizado com sucesso!!!\n");
-
-                    espacamento();
-                    printf("|\n");
                 }
+                
                 // Cálculo do novo limite parcial (de cada conta) após o saque
 
                 if (valorSaque <= saldoContaCorrente) {
@@ -73,7 +70,17 @@ int main(){
                     saldoContaPoupanca -= valorSaque;
                 }
                 // Cálculo do limite total após o saque
-                limiteDisponivel -= valorSaque;
+                if (valorSaque == limiteDisponivel){
+                    limiteDisponivel = 0;
+                } else {
+                    limiteDisponivel -= valorSaque;
+                }
+
+                // Informando que o saque foi realizado
+                printf("|\n|  O saque foi realizado com sucesso!!!\n");
+
+                espacamento();
+                printf("|\n");
 
                 sleep(2); // Esperando 2s
 
