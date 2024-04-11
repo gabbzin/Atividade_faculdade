@@ -70,12 +70,8 @@ int main(){
                     saldoContaPoupanca -= valorSaque;
                 }
                 // Cálculo do limite total após o saque
-                if (valorSaque == limiteDisponivel){
-                    limiteDisponivel = 0;
-                } else {
-                    limiteDisponivel -= valorSaque;
-                }
-
+                limiteDisponivel = saldoContaCorrente + saldoContaPoupanca;
+                
                 // Informando que o saque foi realizado
                 printf("|\n|  O saque foi realizado com sucesso!!!\n");
 
@@ -85,7 +81,7 @@ int main(){
                 sleep(2); // Esperando 2s
 
                 // Mostrando o novo limite disponível e os saldos restantes das contas Corrente e Poupança
-                printf("|  Novo limite disponivel: %.2lf \n", limiteDisponivel);
+                printf("|  Novo limite disponivel: R$ %.2lf \n", limiteDisponivel);
                 printf("|  O saldo restante da sua conta corrente ficou: R$ %.2lf \n", saldoContaCorrente);
                 printf("|  O saldo restante da sua conta poupanca ficou: R$ %.2lf \n", saldoContaPoupanca);
 
@@ -148,6 +144,8 @@ int main(){
                     saldoContaPoupanca += valorDeposito;
                     printf("|  Novo saldo da conta poupanca: R$ %.2lf \n", saldoContaPoupanca);
                 }
+
+                limiteDisponivel = saldoContaCorrente + saldoContaPoupanca; // Calculando o novo limite
 
                 espacamento();
                 sleep(2);
