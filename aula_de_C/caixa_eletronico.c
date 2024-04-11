@@ -115,7 +115,7 @@ int main(){
                 printf("|  1. Corrente        2. Poupanca \n");
                 printf("|  Sua escolha: ");
                 scanf("%d", &escolhaConta);
-
+                
                 espacamento();
                 sleep(2);
 
