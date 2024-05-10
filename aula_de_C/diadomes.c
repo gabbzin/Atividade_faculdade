@@ -79,6 +79,9 @@ int main(){
                 printf("Mes invalido");
             }
             break;
+        default:
+            printf("Mes invalido");
+            break;
     }
     return 0;
 }
