@@ -28,9 +28,11 @@ int main(){
     default:
         if (isalpha(letra)){
             printf("Consoante");
+        } else if (ispunct(letra)){
+            printf("Sinal de pontuacao");
         }
         else{
-            printf("Nao e uma letra");
+            printf("Nao e uma letra e nem um sinal de pontuacao");
         }
         break;
     }
