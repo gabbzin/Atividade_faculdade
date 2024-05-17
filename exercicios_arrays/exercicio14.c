@@ -12,11 +12,11 @@ int main(){
     int tamanhoArray = tamanho / sizeof(array01[0]);
 
     for (i = 0; i < tamanhoArray; i++){
-        for (j = 0; j < tamanhoArray; j++){
+        for (j = 0; j < 1; j++){ // Fazer alterações nas condicões desse for
             if (i % 2 == 0){
-                array03[i] = array01[i];
+                array03[i] = array01[j];
             } else {
-                array03[i] = array02[i];
+                array03[i] = array02[j];
             }
         }
     }
