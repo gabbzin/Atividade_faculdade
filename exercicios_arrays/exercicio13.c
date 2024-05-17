@@ -1,24 +1,17 @@
-#define MAX_SIZE 100
+#define MAX_SIZE 20
 #include <stdio.h>
 
 int main(){
-    int i = 0, resposta = 1, numeros[MAX_SIZE];
-    int maior = 0, menor;
+    int i = 0, resposta, numeros[MAX_SIZE];
 
     do {
         if (i >= MAX_SIZE) {
             printf("Limite de %d números atingido.\n", MAX_SIZE);
             break;
         }
-        
+
         printf("Digite um numero: ");
         scanf("%d", &numeros[i]);
-
-        if (numeros[i] > maior){
-            maior = numeros[i];
-        } else if (numeros[i] < menor){
-            menor = numeros[i];
-        }
 
         i++;
 
@@ -26,8 +19,13 @@ int main(){
         scanf("%d", &resposta);
     } while (resposta != 0);
 
-    printf("O maior numero digitado foi: %d \n", maior);
-    printf("O menor numero digitado foi: %d \n", menor);
+    int tamanho = i;
+
+    for (i = 0; i < tamanho; i++){
+        if (numeros[i] % 2 == 0){
+            printf("%d, ", numeros[i]);
+        }
+    }
 
     return 0;
 }
