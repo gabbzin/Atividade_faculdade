@@ -8,8 +8,8 @@ int main(){
         j = 0;
         
         while (j < 4){
-            if (i % 2 == 1){
-            numbers[i][j]++;
+            if (i % 2 == 0){
+            numbers[i][j] = 1;
             }
 
             printf("%d, ", numbers[i][j]);
