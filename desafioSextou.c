@@ -6,7 +6,7 @@ int calcularDeterminante(int mat[3][3]) {
            mat[0][2] * (mat[1][0] * mat[2][1] - mat[1][1] * mat[2][0]);
 }
 
-int main() {
+int main(){
     int i, j;
     int A[3][3], B[3];
 
@@ -53,9 +53,9 @@ int main() {
     };
 
     // Calculando o Dx, Dy e Dz
-    double detA1 = calcularDeterminante(A1);
-    double detA2 = calcularDeterminante(A2);
-    double detA3 = calcularDeterminante(A3);
+    double detA1 = calcularDeterminante(A1); // Dx
+    double detA2 = calcularDeterminante(A2); // Dy
+    double detA3 = calcularDeterminante(A3); // Dz
 
     // Soluções
     double x1 = detA1 / determinanteGeral;
