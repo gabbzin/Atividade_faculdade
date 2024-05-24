@@ -14,7 +14,7 @@ int main(){
 
     fprintf(arquivo, "%s", frase);
 
-    printf("Frase escrita no arquivo!");
+    printf("Frase escrita no arquivo!!");
 
     fclose(arquivo);
 
