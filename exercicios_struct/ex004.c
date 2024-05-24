@@ -7,7 +7,7 @@ typedef struct{
 } informacoes;
 
 int main(){
-    FILE *arquivo = fopen("arquivo.csv", "a+");
+    FILE *arquivo = fopen("arquivo.txt", "a+");
     if (arquivo == NULL){
         perror("Erro ao abrir o arquivo!");
         return 1;
