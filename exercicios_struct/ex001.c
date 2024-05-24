@@ -9,11 +9,13 @@ int main(){
     printf("Digite os segundos do timer: ");
     scanf("%d", &timer);
 
-    for(i = timer; i >= 0; i--){
+    for(i = timer; i > 0; i--){
         printf("%d \n", i);
 
         sleep(1);
     }
+
+    printf("Timer finalizado com sucesso!");
 
     return 0;
 }
