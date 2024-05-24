@@ -3,6 +3,8 @@
 #include <windows.h>
 #include <stdbool.h>
 
+#define MAX_LINHA 100
+
 typedef struct{
     char nome[30];
     float preco;
@@ -44,9 +46,9 @@ void adicionar(){
     sleep(2);
 }
 
-void alterarDados(FILE *arquivo){
+void alterarDados(FILE *arquivo){ // Arrumar
     char buffer[100], nomeDaBusca[30];
-    int operando, linha;
+    int operando;
     bool encontrado = false;
 
     sleep(2);
@@ -70,7 +72,7 @@ void alterarDados(FILE *arquivo){
     }
 
     if (!encontrado){
-        printf("Produto não encontrado!");
+        printf("Produto nao encontrado!\n");
         return;
     }
 
@@ -93,7 +95,7 @@ void alterarDados(FILE *arquivo){
             espaco();
 
             break;
-        case 2:
+        case 2: // Não está funcionando
             printf("Digite o novo preco do produto: ");
             fflush(stdin); // Limpando a entrada
             fgets(buffer, sizeof(buffer), stdin);
@@ -122,30 +124,27 @@ void alterarDados(FILE *arquivo){
 
     sprintf(buffer, "%s,%.2f,%d", p.nome, p.preco, p.quantidade); // Fazendo alterações na linha correspodente
 
-    FILE *arquivoTemporario = tempfile();
-    if(tmpfile == NULL){
+    FILE *arquivoTemporario = fopen("temp.csv", "w");
+    if (arquivoTemporario == NULL) {
         printf("Estamos com falhas nessa operacao!");
         return;
     }
 
     rewind(arquivo);
-    while (fgets(buffer, sizeof(buffer), arq) != NULL) {
+    while (fgets(buffer, sizeof(buffer), arquivo) != NULL) {
         char *nomeProduto = strtok(buffer, ",");
-        if (strcmp(nomeProduto, nomeBusca) == 0) { // Se for a linha do produto que estamos alterando
-            fputs(buffer, tempFile); // Substituir a linha correspondente pelo buffer modificado
-            continue;
+        if (strcmp(nomeProduto, nomeDaBusca) == 0) {
+            fprintf(arquivoTemporario, "%s,%.2f,%d\n", p.nome, p.preco, p.quantidade);
+        } else {
+            fputs(buffer, arquivoTemporario);
         }
-        fputs(buffer, tempFile); // Copiar as outras linhas sem modificações
     }
 
-    rewind(arquivo);
-    rewind(tempfile);
+    fclose(arquivo);
+    fclose(arquivoTemporario);
 
-    while (fgets(buffer, sizeof(buffer), tempFile) != NULL){ // Copiando o conteúdo de volta ao arquivo original
-        fputs(buffer, arq);
-    }
-
-    fclose(tempFile); // Fechar o arquivo temporário
+    remove("arquivo.csv");
+    rename("temp.csv", "arquivo.csv");
 
     printf("Alteracoes salvas com sucesso!\n");
 
@@ -153,6 +152,12 @@ void alterarDados(FILE *arquivo){
     sleep(2);
 }
 
+void lerDados(FILE *arquivo){ // Arrumar
+    char linha[MAX_LINHA];
+    while(fgets(linha, MAX_LINHA, arquivo)){
+        printf("%s", linha);
+    }
+}
 int main(){
     int opcao;
     FILE *arq = fopen("arquivo.csv", "a+");
@@ -176,12 +181,13 @@ int main(){
                 printf("Opcao selecionada: 1 \n\n");
                 adicionar();
                 break;
-            case 2:
+            case 2: // Alterar informações de produtos do estoque
                 printf("Opcao selecionada: 2 \n\n");
-                alterarDados(arq);
+                alterarDados(arq); // ARRUMAR
                 break;
-            case 3:
+            case 3: // Ler e escrever os produtos do estoque
                 printf("Opcao selecionada: 3 \n\n");
+                lerDados(arq); // ARRUMAR
                 break;
             case 4:
                 printf("Encerrando o programa!!!\n");
