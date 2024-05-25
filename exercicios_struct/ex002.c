@@ -3,7 +3,7 @@
 #include <windows.h>
 #include <stdbool.h>
 
-#define MAX_LINHA 100
+#define MAX_SIZE 100
 
 typedef struct{
     char nome[30];
@@ -19,7 +19,7 @@ void espaco(){
     printf("\n---------------------------------------------------------------------------------\n\n");
 }
 
-void adicionar(){
+void adicionar(FILE *arquivo){
     sleep(2);
 
     printf("Digite o nome do produto: "); // Pegando o nome do produto
@@ -38,12 +38,15 @@ void adicionar(){
     printf("Digite a quantidade do produto: "); // Pegando a quantidade de produto
     scanf("%d", &p.quantidade);
 
+    fprintf(arquivo, "%s; R$%.2f; %d\n", p.nome, p.preco, p.quantidade);
     sleep(2);
 
     printf("\nAdicionado com sucesso!");
 
     espaco();
     sleep(2);
+
+    fclose(arquivo);
 }
 
 void alterarDados(FILE *arquivo){ // Arrumar
@@ -153,21 +156,36 @@ void alterarDados(FILE *arquivo){ // Arrumar
 }
 
 void lerDados(FILE *arquivo){ // Arrumar
-    char linha[MAX_LINHA];
-    while(fgets(linha, MAX_LINHA, arquivo)){
-        printf("%s", linha);
+    char linha[MAX_SIZE];
+
+    while (fgets(linha, sizeof(linha), arquivo)){
+        // Remove o caractere de nova linha, se presente
+        linha[strcspn(linha, "\n")] = 0;
+
+        // Analisa a linha para três elementos
+        if(linha == NULL){
+            printf("Erro ao ler arquivo");
+        } else {
+            sleep(1);
+            printf("%s \n", linha);
+        }
     }
+
+    fclose(arquivo); // Abertura do arquivo está em loop, necessário fecha-o na função
+    
+    sleep(2);
+    espaco();
 }
 int main(){
     int opcao;
-    FILE *arq = fopen("arquivo.csv", "a+");
-
-    if (arq == NULL){
-        perror("Erro ao abrir o arquivo!");
-        return 1;
-    }
     
     while(TRUE){ // Pedindo ao usuário para escolher a opção
+        FILE *arq = fopen("arquivo.csv", "a+");
+
+        if (arq == NULL){
+            perror("Erro ao abrir o arquivo!");
+            return 1;
+        }
         printf("Digite a operacao que deseja realizar: \n");
         printf("1. Adicionar produtos ao estoque \n2. Atualizar produtos do estoque \n3. Listar todos os produtos do estoque \n4. Sair\n");
         printf("Sua escolha: ");
@@ -179,7 +197,7 @@ int main(){
         switch(opcao){
             case 1: // Adicionar produtos ao estoque
                 printf("Opcao selecionada: 1 \n\n");
-                adicionar();
+                adicionar(arq);
                 break;
             case 2: // Alterar informações de produtos do estoque
                 printf("Opcao selecionada: 2 \n\n");
@@ -187,10 +205,10 @@ int main(){
                 break;
             case 3: // Ler e escrever os produtos do estoque
                 printf("Opcao selecionada: 3 \n\n");
-                lerDados(arq); // ARRUMAR
+                lerDados(arq);
                 break;
             case 4:
-                printf("Encerrando o programa!!!\n");
+                printf("Encerrando o programa!!!\n\n");
                 fclose(arq);
                 return 0;
             default:
