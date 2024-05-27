@@ -5,26 +5,32 @@
 
 #define MAX_SIZE 100
 
-typedef struct{
+typedef struct {
     char nome[30];
     float preco;
     int quantidade;
 } produto;
+
 produto p;
 
-void sleep(int segundos){
-    return Sleep(1000 * segundos);
+void sleep(int segundos) {
+    Sleep(1000 * segundos);
 }
-void espaco(){
+
+void espaco() {
     printf("\n---------------------------------------------------------------------------------\n\n");
 }
 
-void adicionar(FILE *arquivo){
+void limparBufferEntrada() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
+
+void adicionar(FILE *arquivo) {
     sleep(2);
 
     printf("Digite o nome do produto: "); // Pegando o nome do produto
-    // Limpando o buffer de entrada
-    fflush(stdin);
+    limparBufferEntrada();
     fgets(p.nome, sizeof(p.nome), stdin);
     p.nome[strcspn(p.nome, "\n")] = 0;
 
@@ -45,87 +51,19 @@ void adicionar(FILE *arquivo){
 
     espaco();
     sleep(2);
-
-    fclose(arquivo);
 }
 
-void alterarDados(FILE *arquivo){ // Arrumar
+void alterarDados(FILE *arquivo) {
     char buffer[100], nomeDaBusca[30];
     int operando;
     bool encontrado = false;
 
     sleep(2);
 
-    printf("Qual produto deseja alterar? "); // Pegando o nome do produto
-    fflush(stdin); // Limpando a entrada
+    printf("Qual produto deseja alterar? ");
+    limparBufferEntrada();
     fgets(nomeDaBusca, sizeof(nomeDaBusca), stdin);
-
-    size_t len = strlen(nomeDaBusca); // Não quebrar a linha ao finalizar o fgets
-    if (len > 0 && nomeDaBusca[len - 1] == '\n') {
-        nomeDaBusca[len - 1] = '\0';
-    }
-
-    rewind(arquivo); // Para voltar ao início do arquivo
-    while(fgets(buffer, sizeof(buffer), arquivo) != NULL){
-        char *nomeProduto = strtok(buffer, ","); // Extraindo o primeiro elemento de cada linha
-        if(strcmp(nomeProduto, nomeDaBusca) == 0){
-            printf("Produto encontrado com sucesso!");
-            encontrado = true;
-        }
-    }
-
-    if (!encontrado){
-        printf("Produto nao encontrado!\n");
-        return;
-    }
-
-    // Perguntando ao usuário o que será alterado
-    printf("O que deseja alterar? \n");
-    printf("1. Nome    2. Preco    3. Quantidade \n");
-    printf("Sua escolha: ");
-    scanf("%d", &operando);
-
-    switch(operando){
-        case 1:
-            printf("Digite o novo nome do produto: "); // Pegando o nome do produto
-            // Limpando o buffer de entrada
-            fflush(stdin);
-            fgets(p.nome, sizeof(p.nome), stdin);
-            p.nome[strcspn(p.nome, "\n")] = 0;
-
-            espaco();
-            printf("Nome alterado com sucesso");
-            espaco();
-
-            break;
-        case 2: // Não está funcionando
-            printf("Digite o novo preco do produto: ");
-            fflush(stdin); // Limpando a entrada
-            fgets(buffer, sizeof(buffer), stdin);
-            p.preco = strtod(buffer, NULL);
-
-            espaco();
-            printf("O preco foi alterado com sucesso!");
-            espaco();
-
-            break;
-        case 3:
-            printf("Digite a nova quantidade de produto no estoque: ");
-            fflush(stdin);
-            fgets(buffer, sizeof(buffer), stdin);
-            p.quantidade = strtol(buffer, NULL, 10);
-
-            espaco();
-            printf("A quantidade foi alterada com sucesso!");
-            espaco();
-
-            break;
-        default:
-            printf("Opcao invalida");
-            break;
-    }
-
-    sprintf(buffer, "%s,%.2f,%d", p.nome, p.preco, p.quantidade); // Fazendo alterações na linha correspodente
+    nomeDaBusca[strcspn(nomeDaBusca, "\n")] = 0;
 
     FILE *arquivoTemporario = fopen("temp.csv", "w");
     if (arquivoTemporario == NULL) {
@@ -135,12 +73,50 @@ void alterarDados(FILE *arquivo){ // Arrumar
 
     rewind(arquivo);
     while (fgets(buffer, sizeof(buffer), arquivo) != NULL) {
-        char *nomeProduto = strtok(buffer, ",");
+        char *nomeProduto = strtok(buffer, ";");
         if (strcmp(nomeProduto, nomeDaBusca) == 0) {
-            fprintf(arquivoTemporario, "%s,%.2f,%d\n", p.nome, p.preco, p.quantidade);
+            encontrado = true;
+            printf("Produto encontrado com sucesso!\n");
+
+            printf("O que deseja alterar? \n");
+            printf("1. Nome    2. Preco    3. Quantidade \n");
+            printf("Sua escolha: ");
+            scanf("%d", &operando);
+            limparBufferEntrada();
+
+            switch (operando) {
+                case 1:
+                    printf("Digite o novo nome do produto: ");
+                    fgets(p.nome, sizeof(p.nome), stdin);
+                    p.nome[strcspn(p.nome, "\n")] = 0;
+                    fprintf(arquivoTemporario, "%s; R$%.2f; %d\n", p.nome, p.preco, p.quantidade);
+                    printf("Nome alterado com sucesso\n");
+                    break;
+                case 2:
+                    printf("Digite o novo preco do produto: ");
+                    scanf("%f", &p.preco);
+                    limparBufferEntrada();
+                    fprintf(arquivoTemporario, "%s; R$%.2f; %d\n", p.nome, p.preco, p.quantidade);
+                    printf("O preco foi alterado com sucesso!\n");
+                    break;
+                case 3:
+                    printf("Digite a nova quantidade de produto no estoque: ");
+                    scanf("%d", &p.quantidade);
+                    limparBufferEntrada();
+                    fprintf(arquivoTemporario, "%s; R$%.2f; %d\n", p.nome, p.preco, p.quantidade);
+                    printf("A quantidade foi alterada com sucesso!\n");
+                    break;
+                default:
+                    printf("Opcao invalida\n");
+                    break;
+            }
         } else {
             fputs(buffer, arquivoTemporario);
         }
+    }
+
+    if (!encontrado) {
+        printf("Produto nao encontrado!\n");
     }
 
     fclose(arquivo);
@@ -149,43 +125,33 @@ void alterarDados(FILE *arquivo){ // Arrumar
     remove("arquivo.csv");
     rename("temp.csv", "arquivo.csv");
 
-    printf("Alteracoes salvas com sucesso!\n");
-
     espaco();
     sleep(2);
 }
 
-void lerDados(FILE *arquivo){ // Arrumar
+void lerDados(FILE *arquivo) {
     char linha[MAX_SIZE];
 
-    while (fgets(linha, sizeof(linha), arquivo)){
-        // Remove o caractere de nova linha, se presente
+    rewind(arquivo);
+    while (fgets(linha, sizeof(linha), arquivo)) {
         linha[strcspn(linha, "\n")] = 0;
-
-        // Analisa a linha para três elementos
-        if(linha == NULL){
-            printf("Erro ao ler arquivo");
-        } else {
-            sleep(1);
-            printf("%s \n", linha);
-        }
+        printf("%s\n", linha);
     }
 
-    fclose(arquivo); // Abertura do arquivo está em loop, necessário fecha-o na função
-    
     sleep(2);
     espaco();
 }
-int main(){
-    int opcao;
-    
-    while(TRUE){ // Pedindo ao usuário para escolher a opção
-        FILE *arq = fopen("arquivo.csv", "a+");
 
-        if (arq == NULL){
+int main() {
+    int opcao;
+
+    while (TRUE) {
+        FILE *arq = fopen("arquivo.csv", "a+");
+        if (arq == NULL) {
             perror("Erro ao abrir o arquivo!");
             return 1;
         }
+
         printf("Digite a operacao que deseja realizar: \n");
         printf("1. Adicionar produtos ao estoque \n2. Atualizar produtos do estoque \n3. Listar todos os produtos do estoque \n4. Sair\n");
         printf("Sua escolha: ");
@@ -193,17 +159,16 @@ int main(){
 
         espaco();
 
-        // Selecionando qual operação o usuário quer fazer
-        switch(opcao){
-            case 1: // Adicionar produtos ao estoque
+        switch (opcao) {
+            case 1:
                 printf("Opcao selecionada: 1 \n\n");
                 adicionar(arq);
                 break;
-            case 2: // Alterar informações de produtos do estoque
+            case 2:
                 printf("Opcao selecionada: 2 \n\n");
-                alterarDados(arq); // ARRUMAR
+                alterarDados(arq);
                 break;
-            case 3: // Ler e escrever os produtos do estoque
+            case 3:
                 printf("Opcao selecionada: 3 \n\n");
                 lerDados(arq);
                 break;
@@ -212,8 +177,10 @@ int main(){
                 fclose(arq);
                 return 0;
             default:
-                printf("Opcao invalida!");
+                printf("Opcao invalida!\n");
                 break;
         }
+
+        fclose(arq);
     }
 }
