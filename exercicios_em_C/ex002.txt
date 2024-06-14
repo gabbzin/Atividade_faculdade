@@ -1,0 +1,15 @@
+A principal diferença entre função e procedimentos está no valor de retorno.
+
+A função retorna um valor de um tipo especifico (int, float, entre outros tipos).
+
+Exemplo:
+int soma(a, b){
+    return a + b;
+}
+
+Os procedimentos não retornam um valor, sendo indicado pelo tipo void
+
+Exemplo:
+void mensagem(nome){
+    printf("Ola %s", nome);
+}
