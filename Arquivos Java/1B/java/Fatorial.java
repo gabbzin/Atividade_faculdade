@@ -9,5 +9,6 @@ public class Fatorial {
             fatorial *= i;
         }
         System.out.println("O fatorial de " + numero + " é: " + fatorial);
+        scanner.close();
     }
 }

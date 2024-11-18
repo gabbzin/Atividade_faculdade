@@ -16,5 +16,6 @@ public class MaiorNumeroArray {
             }
         }
         System.out.println("O maior número do array é: " + maior);
+        scanner.close();
     }
 }

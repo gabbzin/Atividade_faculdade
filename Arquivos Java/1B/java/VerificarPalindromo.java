@@ -13,5 +13,6 @@ public class VerificarPalindromo {
         } else {
             System.out.println("A palavra não é um palíndromo.");
         }
+        scanner.close();
     }
 }

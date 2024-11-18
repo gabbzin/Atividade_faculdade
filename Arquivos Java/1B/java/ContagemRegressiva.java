@@ -9,5 +9,6 @@ public class ContagemRegressiva {
             numero--;
         }
         System.out.println("FIM!");
+        scanner.close();
     }
 }

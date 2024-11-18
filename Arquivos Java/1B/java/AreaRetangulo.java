@@ -8,5 +8,6 @@ public class AreaRetangulo {
         double altura = scanner.nextDouble();
         double area = largura * altura;
         System.out.println("A área do retângulo é: " + area);
+        scanner.close();
     }
 }

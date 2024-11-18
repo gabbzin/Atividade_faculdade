@@ -23,5 +23,6 @@ public class MediaNotas {
         } else {
             System.out.println("Reprovado");
         }
+        scanner.close();
     }
 }
