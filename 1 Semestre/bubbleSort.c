@@ -7,21 +7,26 @@ void swap(int *a, int *b){
 }
 
 void bubbleSort(int *v, int n){
-    int i;
-    if (n < 1)return;
+    if (n < 1) return;
 
-    for(i = 0; i < n; i++){
-        if(v[i] > v[i+1]){
+    for (int i = 0; i < n; i++){
+        if (v[i] > v[i+1]){
             swap(&v[i], &v[i+1]);
         }
-    bubbleSort(v, n - 1);
     }
+
+    bubbleSort(v, n - 1);
 }
 
 int main(){
-    int tamanho, i, *v;
-    printf("Digite o tamanho do vetor: ");
-    scanf("%d", &tamanho);
+    int vetor[8] = {150, 75, 200, 50, 100, 175, 125, 25};
+    int i;
 
+    bubbleSort(vetor, 7);
+
+    for (i = 0; i < 8; i++){
+        printf("%d ", vetor[i]);
+    }
     
+    return 0;
 }
