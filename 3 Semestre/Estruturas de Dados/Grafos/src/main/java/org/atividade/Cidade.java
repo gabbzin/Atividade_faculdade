@@ -1,4 +1,4 @@
-package org.example;
+package org.atividade;
 
 public class Cidade {
     String nome;
